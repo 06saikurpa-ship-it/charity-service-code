@@ -1,0 +1,237 @@
+%%html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity Connect Charity</title>
+    <!-- Embedded CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        main {
+            padding: 2rem 5%;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        section {
+            background: white;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-buttons button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 5px;
+            border-radius: 4px;
+        }
+
+        .cta-buttons button:hover {
+            opacity: 0.9;
+        }
+
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        form label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        form input, form button {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        form button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        /* Story Styling */
+        .story {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            background-color: #333;
+            color: white;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Unity Connect</h1>
+        <p>Connecting unused items with people in need.</p>
+    </header>
+
+    <main>
+        <section id="mission">
+            <h2>Our Mission</h2>
+            <p>We streamline the process of donating items, ensuring they reach those who can use them most effectively. Join us in reducing waste and building a stronger, more supportive community.</p>
+        </section>
+
+        <section id="call-to-action">
+            <h2>How You Can Help</h2>
+            <div class="cta-buttons">
+                <button onclick="showModal('donate')">I Want to Donate Items</button>
+                <button onclick="showModal('receive')">I Am in Need of Items</button>
+            </div>
+        </section>
+
+        <section id="stories">
+            <h2>Impact Stories</h2>
+            <div id="story-container">
+                <!-- Stories will be dynamically added here by script.js -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Unity Connect Charity. Contact us at info@unityconnect.org</p>
+    </footer>
+
+    <!-- Donation Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-description"></p>
+            <form id="donation-form" onsubmit="submitForm(event)">
+                <label for="item">Item Description:</label>
+                <input type="text" id="item" required>
+                <label for="contact">Your Email/Phone:</label>
+                <input type="text" id="contact" required>
+                <button type="submit">Submit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Embedded JavaScript -->
+    <script>
+        // Simulate some initial stories/requests
+        const stories = [
+            { type: 'Donation', content: 'Someone donated a gently used couch to a family in need.' },
+            { type: 'Request', content: 'A recent immigrant found essential kitchen items through our service.' }
+        ];
+
+        function loadStories() {
+            const container = document.getElementById('story-container');
+            container.innerHTML = '';
+            stories.forEach(story => {
+                const storyDiv = document.createElement('div');
+                storyDiv.classList.add('story');
+                storyDiv.innerHTML = `<strong>${story.type}:</strong> ${story.content}`;
+                container.appendChild(storyDiv);
+            });
+        }
+
+        // Modal functions
+        function showModal(type) {
+            const modal = document.getElementById('modal');
+            const title = document.getElementById('modal-title');
+            const description = document.getElementById('modal-description');
+
+            if (type === 'donate') {
+                title.textContent = 'Donate Items';
+                description.textContent = 'Please provide details about the items you wish to donate and your contact information.';
+            } else if (type === 'receive') {
+                title.textContent = 'Request Items';
+                description.textContent = 'Please describe the items you need and how we can reach you.';
+            }
+
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('donation-form').reset();
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            const item = document.getElementById('item').value;
+            const contact = document.getElementById('contact').value;
+
+            // In a real application, this data would be sent to a backend server.
+            // For this static GitHub Pages example, we simulate success and add a temporary story.
+            alert(`Thank you! Your request for "${item}" has been received. We will contact you at ${contact}.`);
+
+            stories.unshift({ type: 'New Entry', content: `Received request regarding: ${item}` });
+            loadStories(); // Refresh the stories list
+            closeModal();
+        }
+
+        // Close the modal if the user clicks outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Load stories on page load
+        document.addEventListener('DOMContentLoaded', loadStories);
+    </script>
+</body>
+</html>
